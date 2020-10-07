@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Tabs from "./components/tabs";
+import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    shouldShowSrcCode: false,
+  };
+
+  onclickShowSrcCode = () => {
+    this.setState((prevState) => ({
+      shouldShowSrcCode: !prevState.shouldShowSrcCode,
+    }));
+  };
+  render() {
+    const Code = `<Tabs>
+          <div label="Sub Zero">
+            This guy is pretty chill. He likes to freeze people and doesn't like scorpions very much.
+          </div>
+          <div label="Star Fox">
+            Really fast and annoying. Those hexagons will get ya.  <em>hiyaaaaaaa!</em>
+          </div>
+          <div label="Batman">
+            Don't mention his parents.
+          </div>
+        </Tabs>`;
+
+    return (
+      <div className="App">
+        <div className="tabs-demo">
+          <p>Tabbed pane demo</p>
+          show source code
+          <input type="checkbox" onClick={this.onclickShowSrcCode}></input>
+          <LiveProvider code={Code} scope={{ Tabs }}>
+            {this.state.shouldShowSrcCode && <LiveEditor />}
+            <LiveError />
+            <LivePreview />
+          </LiveProvider>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
